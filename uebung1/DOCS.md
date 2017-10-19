@@ -1,7 +1,25 @@
 # Übung No.1 
 
 ### 1. Zeitserver
+#### Finden Sie einen öffentlich zugänglichen Zeitserver, und implementieren Sie mit Hilfe einer Java NTP Library eine Anwendung, welche das aktuelle Datum und Uhrzeit auf der Konsole ausgibt.
+    Das Programm benutzt eine NTP library von der Apachi Commons Net API v3.6
 
+  a. Was ist UTC und wo erfolgt die Anpassung in die aktuelle Zeitzone?
+    UTC ist die Coordinated Universal Time - also die Weltzeit. Die Anpassung erfolgt lokal.
+  b. Was ist NTP und welcher Port wird verwendet?
+    NTP ist das Network Time Protocol, welches den Port 123 (UDP) zur Kommunikation verwendet.
+  c. Was ist das offset?
+    Der Offset ist die Hälfte der Differenz der Laufzeiten der Pakete Client-Server und Server-Client.
+    Es wird also ermittelt, wie sehr sich die Verbindung Client->Server zu Server->Client unterscheidet, um präzise Zeitangaben zu ermöglichen.
+    Die Rechenzeit wird abgezogen nur die Laufzeit der Pakete im Netzwerk zählt.
+        Berechnung: ((S1 - C1) - (C2 - S2)) / 2    [S = server, C = client]
+  d. Was ist das root delay?
+    Das root delay ist die totale Rundlaufzeit des Paketes im Netzwerk ohne Rechenlaufzeit.
+        Berechnung: Der Delay ist: ((C2 - C1) - (S2 - S1))    [S = server, C = client]
+  e. Was ist ein leap?
+    Ein leap ist ein angekündigter Sprung in der Zeit - eine leap second die zur Korrektur der Zeit am Tagesende angewendet wird.
+  f. Wozu wird NTP im Kontext verteilte Systeme benötigt?
+    NTP wird benötigt um einen gemeinsamen Zugriff auf Ressourcen bei Verteilten Systemen zu koordinieren und um festzustellen, welcher Prozess ein Ereignis zuerst ausgelöst hast.
 
 ### 2. DNS Records
 ##### Aufgabe: Unter der Benutzung der UNIX Commands (nslookup, dig) herausfinden, welche Bedeutung die einzelnen Einträge in einem DNS Server haben.
