@@ -4,16 +4,23 @@
 
 
 ### 2. DNS Records
+##### Aufgabe: Unter der Benutzung der UNIX Commands (nslookup, dig) herausfinden, welche Bedeutung die einzelnen Einträge in einem DNS Server haben.
 
-  1. ein A Record ist ein Eintrag für eine bestimmte IP (bspw. 172.129.21.9)
-  2. ist eine Record zum zuweisen von einen oder mehreren Domainnamen zu einer IP Adresse
-  3. ein Eintrag zum denfinieren eines Mail-Server (MailExchange)
-  4. SRV's sind die einzelnen Einträge die später als Records hinterlegt werden
+  a. ein A Record ist ein Eintrag für eine bestimmte IP (bspw. 172.129.21.9)
+  
+  b. ist eine Record zum zuweisen von einen oder mehreren Domainnamen zu einer IP Adresse
+  
+  c. ein Eintrag zum denfinieren eines Mail-Server (MailExchange)
+  
+  d. SRV's sind die einzelnen Einträge die später als Records hinterlegt werden
      Werden zur Anlage einzelner Dienst genutzt wie zum Beipsiel um eine IP Adresse zu hinterlegen
-  5. Einen weiteren Nameservice den man nutzen kann lautet: `NetBIOS` und arbeitet auf dem UDP Port 137
+     
+  e. Einen weiteren Nameservice den man nutzen kann lautet: `NetBIOS` und arbeitet auf dem UDP Port 137
   
 ### 3. Interfaces
-
+##### Aufgabe: Das verstehen von einzelnen Netzwerk Interfaces und die bedeutung der einzelnen Komponenten wie IP Adressen und Netzwerkmasken
+  a.
+  
 ```sh
 ~/Desktop/distributed-systems on  master ⌚ 16:37:47
 $ ifconfig
@@ -71,6 +78,28 @@ bridge0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
 	status: inactive
 ```
 
-  1. *lo0:* das Localhost interface, welcher den Zugriff per 127.0.0.1 ermöglicht
-  2. *en0:* die aktuelle Netzwerkverbindung über mein Wi-Fi (mit IPv4 und ein IPv6 Adresse)
-  3. *awdl0:* ist ein Apple Wireless Direct Link interface zur direkten Verbindung mit anderen Apple Geräten
+  1. **lo0:** das Localhost interface, welcher den Zugriff per 127.0.0.1 ermöglicht
+  2. **en0:** die aktuelle Netzwerkverbindung über mein Wi-Fi (mit IPv4 und ein IPv6 Adresse)
+  3. **awdl0:** ist ein Apple Wireless Direct Link interface zur direkten Verbindung mit anderen Apple Geräten
+
+b. Zur Schachtelung eines gesamten Netzwerkes in einzelne Sub-Netzwerke um es beispielsweise in Abteilungen aufteilen zu können.
+
+c. 
+
+```
+Address:   141.45.208.0          10001101.00101101.11010 000.00000000
+Netmask:   255.255.248.0 = 21    11111111.11111111.11111 000.00000000
+
+Broadcast: 141.45.215.255        10001101.00101101.11010 111.11111111
+Min Host:   141.45.208.1         10001101.00101101.11010 000.00000001
+Max Host:   141.45.215.254       10001101.00101101.11010 111.11111110
+```
+Alle IP Adressen im bereich von 141.45.208.1 bis 141.45.215.254 sind ohne Routing direkt ansprechbar da sie in meinem Subnetz sind.
+
+
+### 4. Routing
+##### Aufgabe: Mittels `traceroute` erklären zu können was Default Gateways sind und welche einzelnen Schritte notwendig sind um Information über den Verwendeten Router zu bekommen.
+
+   a. Ein default Gateway stellt die direkte Verbindung zum Router da um Anfragen an außerhalb des eigenen Subnetzes zu senden.
+   
+   b. `traceroute` sendet zu erst ein Packet mit dem TTL 1 and das Default Gateway um die Informationen über den ersten Router zu bekommen un dann mit TTL 2 für den zweiten Router. Immer so weiter bis er keine ICMP Time Exceeding Message mehr bekommt. Dadurch kann er sicherstellen, das das Paket am letzten Server angekommen ist.
