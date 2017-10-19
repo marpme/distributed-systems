@@ -1,0 +1,76 @@
+# Übung No.1 
+
+### 1. Zeitserver
+
+
+### 2. DNS Records
+
+  1. ein A Record ist ein Eintrag für eine bestimmte IP (bspw. 172.129.21.9)
+  2. ist eine Record zum zuweisen von einen oder mehreren Domainnamen zu einer IP Adresse
+  3. ein Eintrag zum denfinieren eines Mail-Server (MailExchange)
+  4. SRV's sind die einzelnen Einträge die später als Records hinterlegt werden
+     Werden zur Anlage einzelner Dienst genutzt wie zum Beipsiel um eine IP Adresse zu hinterlegen
+  5. Einen weiteren Nameservice den man nutzen kann lautet: `NetBIOS` und arbeitet auf dem UDP Port 137
+  
+### 3. Interfaces
+
+```sh
+~/Desktop/distributed-systems on  master ⌚ 16:37:47
+$ ifconfig
+lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
+	options=1203<RXCSUM,TXCSUM,TXSTATUS,SW_TIMESTAMP>
+	inet 127.0.0.1 netmask 0xff000000
+	inet6 ::1 prefixlen 128
+	inet6 fe80::1%lo0 prefixlen 64 scopeid 0x1
+	nd6 options=201<PERFORMNUD,DAD>
+gif0: flags=8010<POINTOPOINT,MULTICAST> mtu 1280
+stf0: flags=0<> mtu 1280
+XHC0: flags=0<> mtu 0
+XHC20: flags=0<> mtu 0
+en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+	ether f4:0f:24:19:42:e7
+	inet6 fe80::8b9:cfdf:c7bc:a036%en0 prefixlen 64 secured scopeid 0x6
+	inet 141.45.209.46 netmask 0xfffff800 broadcast 141.45.215.255
+	nd6 options=201<PERFORMNUD,DAD>
+	media: autoselect
+	status: active
+p2p0: flags=8843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST> mtu 2304
+	ether 06:0f:24:19:42:e7
+	media: autoselect
+	status: inactive
+awdl0: flags=8943<UP,BROADCAST,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1484
+	ether 42:9e:82:2c:94:9a
+	inet6 fe80::409e:82ff:fe2c:949a%awdl0 prefixlen 64 scopeid 0x8
+	nd6 options=201<PERFORMNUD,DAD>
+	media: autoselect
+	status: active
+en2: flags=8963<UP,BROADCAST,SMART,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1500
+	options=60<TSO4,TSO6>
+	ether 7e:00:94:a0:93:01
+	media: autoselect <full-duplex>
+	status: inactive
+en1: flags=8963<UP,BROADCAST,SMART,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1500
+	options=60<TSO4,TSO6>
+	ether 7e:00:94:a0:93:00
+	media: autoselect <full-duplex>
+	status: inactive
+bridge0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+	options=63<RXCSUM,TXCSUM,TSO4,TSO6>
+	ether 7e:00:94:a0:93:00
+	Configuration:
+		id 0:0:0:0:0:0 priority 0 hellotime 0 fwddelay 0
+		maxage 0 holdcnt 0 proto stp maxaddr 100 timeout 1200
+		root id 0:0:0:0:0:0 priority 0 ifcost 0 port 0
+		ipfilter disabled flags 0x2
+	member: en1 flags=3<LEARNING,DISCOVER>
+	        ifmaxaddr 0 port 10 priority 0 path cost 0
+	member: en2 flags=3<LEARNING,DISCOVER>
+	        ifmaxaddr 0 port 9 priority 0 path cost 0
+	nd6 options=201<PERFORMNUD,DAD>
+	media: <unknown type>
+	status: inactive
+```
+
+  1. *lo0:* das Localhost interface, welcher den Zugriff per 127.0.0.1 ermöglicht
+  2. *en0:* die aktuelle Netzwerkverbindung über mein Wi-Fi (mit IPv4 und ein IPv6 Adresse)
+  3. *awdl0:* ist ein Apple Wireless Direct Link interface zur direkten Verbindung mit anderen Apple Geräten
