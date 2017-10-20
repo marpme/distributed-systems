@@ -8,8 +8,11 @@ import java.time.LocalDateTime;
  */
 public class Entry {
     static final String HOST_ADDRESS = "3.ch.pool.ntp.org";
+
     public static void main(String[] args) {
+
         System.out.println("The current System time is " + LocalDateTime.now(Clock.systemUTC()));
+
         try {
             String timeResponse = NTPClient.getTime(HOST_ADDRESS).toString();
             System.out.println("The Time Server response is " + timeResponse);
