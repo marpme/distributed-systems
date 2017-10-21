@@ -1,7 +1,7 @@
 # Übung No.1 
 
-### 1. Zeitserver
-#### Finden Sie einen öffentlich zugänglichen Zeitserver, und implementieren Sie mit Hilfe einer Java NTP Library eine Anwendung, welche das aktuelle Datum und Uhrzeit auf der Konsole ausgibt.
+## 1. Zeitserver
+### Finden Sie einen öffentlich zugänglichen Zeitserver, und implementieren Sie mit Hilfe einer Java NTP Library eine Anwendung, welche das aktuelle Datum und Uhrzeit auf der Konsole ausgibt.
     Das Programm benutzt eine NTP library von der Apachi Commons Net API v3.6
 
   **a. Was ist UTC und wo erfolgt die Anpassung in die aktuelle Zeitzone?**
@@ -32,8 +32,10 @@
   
     NTP wird benötigt um einen gemeinsamen Zugriff auf Ressourcen bei Verteilten Systemen zu koordinieren und um festzustellen, welcher Prozess ein Ereignis zuerst ausgelöst hast.
 
-### 2. DNS Records
-##### Aufgabe: Unter der Benutzung der UNIX Commands (nslookup, dig) herausfinden, welche Bedeutung die einzelnen Einträge in einem DNS Server haben.
+---
+
+## 2. DNS Records
+#### Aufgabe: Unter der Benutzung der UNIX Commands (nslookup, dig) herausfinden, welche Bedeutung die einzelnen Einträge in einem DNS Server haben.
 
   **a. Was ein A-Record?**
   
@@ -56,9 +58,11 @@
  **e. Welche Alternativen gibt es zu DNS, um IP-Namen aufzulösen?**
  
  	Einen weiteren Nameservice den man nutzen kann lautet: `NetBIOS` und arbeitet auf dem UDP Port 137
-  
-### 3. Interfaces
-##### Aufgabe: Das verstehen von einzelnen Netzwerk Interfaces und die bedeutung der einzelnen Komponenten wie IP Adressen und Netzwerkmasken
+
+---
+
+## 3. Interfaces
+#### Aufgabe: Das verstehen von einzelnen Netzwerk Interfaces und die bedeutung der einzelnen Komponenten wie IP Adressen und Netzwerkmasken
   a.
   
 ```sh
@@ -109,9 +113,10 @@ dar.**
 	
 	Alle IP Adressen im bereich von 141.45.208.1 bis 141.45.215.254 sind ohne Routing direkt ansprechbar da sie in meinem Subnetz sind.
 
+---
 
-### 4. Routing
-##### Aufgabe: Mittels `traceroute` erklären zu können was Default Gateways sind und welche einzelnen Schritte notwendig sind um Information über den Verwendeten Router zu bekommen.
+## 4. Routing
+#### Aufgabe: Mittels `traceroute` erklären zu können was Default Gateways sind und welche einzelnen Schritte notwendig sind um Information über den Verwendeten Router zu bekommen.
 
    **a. Was versteht man unter einem Default Gateway?**
    
