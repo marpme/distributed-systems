@@ -32,8 +32,6 @@
   
     NTP wird benötigt um einen gemeinsamen Zugriff auf Ressourcen bei Verteilten Systemen zu koordinieren und um festzustellen, welcher Prozess ein Ereignis zuerst ausgelöst hast.
 
----
-
 ## 2. DNS Records
 #### Aufgabe: Unter der Benutzung der UNIX Commands (nslookup, dig) herausfinden, welche Bedeutung die einzelnen Einträge in einem DNS Server haben.
 
@@ -58,8 +56,6 @@
  **e. Welche Alternativen gibt es zu DNS, um IP-Namen aufzulösen?**
  
  	Einen weiteren Nameservice den man nutzen kann lautet: `NetBIOS` und arbeitet auf dem UDP Port 137
-
----
 
 ## 3. Interfaces
 #### Aufgabe: Das verstehen von einzelnen Netzwerk Interfaces und die bedeutung der einzelnen Komponenten wie IP Adressen und Netzwerkmasken
@@ -112,8 +108,6 @@ dar.**
 	Max Host:   141.45.215.254       10001101.00101101.11010 111.11111110
 	
 	Alle IP Adressen im bereich von 141.45.208.1 bis 141.45.215.254 sind ohne Routing direkt ansprechbar da sie in meinem Subnetz sind.
-
----
 
 ## 4. Routing
 #### Aufgabe: Mittels `traceroute` erklären zu können was Default Gateways sind und welche einzelnen Schritte notwendig sind um Information über den Verwendeten Router zu bekommen.
