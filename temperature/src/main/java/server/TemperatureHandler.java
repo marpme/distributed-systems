@@ -7,11 +7,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class TemperatureHandler implements Runnable {
 
     private final Socket clientSocket;
-    private final SimpleDateFormat SDF = new SimpleDateFormat("YYYY-MM-dd");
+    private final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
 
     private TemperatureHandler() {
         clientSocket = new Socket();
@@ -42,11 +44,16 @@ public class TemperatureHandler implements Runnable {
         System.out.println("Client connected to our service. Serving Temperature.");
         try {
             BufferedReader clientReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            String clientResponse = clientReader.readLine();
-            Date dateOfTemp = parseDate(clientResponse);
+            String clientRequest = clientReader.readLine();
+            System.out.println("the actual response was " + clientRequest);
+            Date dateOfTemp = parseDate(clientRequest);
             System.out.println("Registered Date was " + dateOfTemp.toString());
+            Optional<TemperatureHistory> history = TemperatureReader.getInstance().receiveTemperatureForDate(dateOfTemp);
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            out.println(dateOfTemp.toString());
+            String response = history
+                    .map(data -> "0;" + data.getWeatherData().stream().collect(Collectors.joining(";")))
+                    .orElse("1;No weather data found for your date.");
+            out.println(response);
         } catch (IOException e) {
             //TODO Client is maybe dead, destroy server executor.
             e.printStackTrace();

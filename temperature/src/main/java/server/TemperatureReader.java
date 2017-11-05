@@ -2,16 +2,30 @@ package server;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class TemperatureReader {
 
     private static final String PATH = "C:\\Users\\Kyon\\Desktop\\distributed-systems\\temperature\\src\\main\\resources\\temperatures.csv";
     private static TemperatureReader instance;
+    private List<TemperatureHistory> temperatures = null;
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private TemperatureReader() {
+        try {
+            temperatures = new CsvToBeanBuilder(new FileReader(PATH))
+                    .withType(TemperatureHistory.class)
+                    .withSeparator(';')
+                    .withSkipLines(1)
+                    .build()
+                    .parse();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     static synchronized TemperatureReader getInstance() {
@@ -22,19 +36,8 @@ public class TemperatureReader {
         return TemperatureReader.instance;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    List receiveTemperatureForDate(String Date) {
-        try {
-            return new CsvToBeanBuilder(new FileReader(PATH))
-                    .withType(TemperatureHistory.class)
-                    .withSeparator(';')
-                    .withSkipLines(1)
-                    .build()
-                    .parse();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    Optional<TemperatureHistory> receiveTemperatureForDate(Date date) {
+        return temperatures.stream().filter(temp -> temp.getDate().equals(date)).findFirst();
     }
 }

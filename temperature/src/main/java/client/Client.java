@@ -1,12 +1,12 @@
 package client;
 
-import java.io.BufferedReader;
+import client.input.WeatherData;
+import client.input.WeatherResponseHandler;
+import client.request.InvalidRequestBodyException;
+import client.request.WeatherRequestHandler;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 /**
  * Created by Jan Kulose - s0557320 on 02.11.17.
@@ -17,41 +17,32 @@ public class Client {
     static Socket serverSocket;
 
     public static void main(String[] args) {
-        client.ConsoleHandler handler = new client.ConsoleHandler(System.in);
+        WeatherConsoleHandler handler = new WeatherConsoleHandler(System.in);
 
-        try {
-            System.out.println("Socket");
-            serverSocket = new Socket(serverAddress, serverPort);
-
-            PrintWriter serverWriter = new PrintWriter(serverSocket.getOutputStream());
-            serverWriter.println("1995-05-21");
-            serverWriter.flush();
-
-            BufferedReader serverReader = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
-            System.out.println(serverReader.readLine());
-
-            serverSocket.shutdownInput();
-            serverSocket.close(); // complete closing input and output
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
         handler.add(event -> {
             if (event.getMessage().matches("\\d{4}-\\d{2}-\\d{2}")) {
                 try {
-                    String date = sdf.parse(event.getMessage()).toString();
-                    System.out.println(date + " is a valid date");
-                } catch (ParseException e) {
-                    System.out.println("could not parse date");
-                    e.printStackTrace();
+                    serverSocket = new Socket(serverAddress, serverPort);
+                    WeatherRequestHandler requestHandler = new WeatherRequestHandler(serverSocket);
+                    WeatherResponseHandler responseHandler = new WeatherResponseHandler();
+
+                    WeatherData weatherInformation = requestHandler
+                            .withRequestBody(event.getMessage())
+                            .send(responseHandler)
+                            .getParsedOutput();
+                    handler.printCurrentWeatherData(weatherInformation);
+
+                    serverSocket.shutdownInput();
+                    serverSocket.close();
+                } catch (InvalidRequestBodyException e) {
+                    System.out.println("We couldn't proceed with the given Date. Please check your date again and make sure it's in the correct format.");
+                } catch (IOException e) {
+                    System.out.println("The server had some problems processing our request. Please try again later.");
                 }
             }
-
         });
 
-        handler.add(event -> {
+        handler.add((ConsoleEvent event) -> {
             if (event.getMessage().equals("exit")) {
                 System.out.println("Exiting application...");
                 System.exit(0);

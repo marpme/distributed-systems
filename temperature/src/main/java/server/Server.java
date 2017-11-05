@@ -3,7 +3,6 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -28,9 +27,6 @@ public class Server {
     static Socket clientSocket;
 
     public static void main(String[] args) {
-
-        List k = TemperatureReader.getInstance().receiveTemperatureForDate("22.22.2222");
-
         try {
             socket = new ServerSocket(PORT);
             while (true) {

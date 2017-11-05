@@ -17,7 +17,7 @@ public class TemperatureHistory implements Serializable {
     private Date date;
 
     @CsvCustomBindByPosition(position = 1, converter = ConvertListToTemperatures.class)
-    private List<Float> weatherData;
+    private List<String> weatherData;
 
     public Date getDate() {
         return date;
@@ -27,11 +27,11 @@ public class TemperatureHistory implements Serializable {
         this.date = date;
     }
 
-    public List<Float> getWeatherData() {
+    public List<String> getWeatherData() {
         return weatherData;
     }
 
-    public void setWeatherData(List<Float> weatherData) {
+    public void setWeatherData(List<String> weatherData) {
         this.weatherData = weatherData;
     }
 

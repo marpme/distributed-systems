@@ -4,8 +4,8 @@ import com.opencsv.bean.AbstractBeanField;
 import com.opencsv.exceptions.CsvConstraintViolationException;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class ConvertListToTemperatures<T> extends AbstractBeanField<T> {
 
@@ -24,14 +24,9 @@ public class ConvertListToTemperatures<T> extends AbstractBeanField<T> {
      */
     @Override
     protected Object convert(String value) throws CsvDataTypeMismatchException, CsvConstraintViolationException {
-        // if (value == null) throw new CsvConstraintViolationException();
+        if (value == null) throw new CsvConstraintViolationException();
 
         String[] temps = value.split("%");
-        List<Float> parsedTemperatures = new ArrayList<>();
-        for (String temp : temps) {
-            parsedTemperatures.add(Float.parseFloat(temp));
-        }
-
-        return parsedTemperatures;
+        return Arrays.stream(temps).collect(Collectors.toList());
     }
 }
