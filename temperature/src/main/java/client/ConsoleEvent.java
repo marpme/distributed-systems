@@ -1,4 +1,4 @@
-package Client;
+package client;
 
 import java.io.InputStream;
 import java.util.EventObject;
@@ -8,7 +8,7 @@ import java.util.EventObject;
  */
 public class ConsoleEvent extends EventObject {
     private static final long serialVersionUID = -2348723947398111324L;
-    private String message;
+    private final String message;
 
     public ConsoleEvent(InputStream source, String message) {
         super(source);

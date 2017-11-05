@@ -1,4 +1,4 @@
-package Client;
+package client;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -12,20 +12,20 @@ public class ConsoleHandler {
     private List<ConsoleEventListener> listenerList = null;
     private InputStream consoleInput = null;
 
-    public ConsoleHandler(InputStream consoleInput) {
-        this.listenerList = new ArrayList<>();
+    ConsoleHandler(InputStream consoleInput) {
+        listenerList = new ArrayList<>();
         this.consoleInput = consoleInput;
     }
 
-    public void add(ConsoleEventListener listener) {
-        this.listenerList.add(listener);
+    void add(ConsoleEventListener listener) {
+        listenerList.add(listener);
     }
 
     public void remove(ConsoleEventListener listener) {
-        this.listenerList.remove(listener);
+        listenerList.remove(listener);
     }
 
-    public void start() {
+    void start() {
         try (Scanner scanner = new Scanner(consoleInput)) {
             while (scanner.ioException() == null) {
                 System.out.println("Please enter:\n" +
