@@ -57,6 +57,8 @@ public class NTPClient {
                 .orElse(0L);
     }
 
+    // computedetails
+
     /**
      * Receives the current time for a given host
      *

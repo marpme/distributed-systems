@@ -14,8 +14,8 @@
     
   **c. Was ist das offset?**
   
-    Der Offset ist die Hälfte der Differenz der Laufzeiten der Pakete Client-Server und Server-Client.
-    Es wird also ermittelt, wie sehr sich die Verbindung Client->Server zu Server->Client unterscheidet, um präzise Zeitangaben zu ermöglichen.
+    Der Offset ist die Hälfte der Differenz der Laufzeiten der Pakete Client.Client-Server und Server-Client.Client.
+    Es wird also ermittelt, wie sehr sich die Verbindung Client.Client->Server zu Server->Client.Client unterscheidet, um präzise Zeitangaben zu ermöglichen.
     Die Rechenzeit wird abgezogen nur die Laufzeit der Pakete im Netzwerk zählt.
         Berechnung: ((S1 - C1) - (C2 - S2)) / 2    [S = server, C = client]
 	
@@ -39,13 +39,13 @@
   
 	ein A Record ist ein Eintrag für eine bestimmte IP (bspw. 172.129.21.9)
   
-  **b. Was ist ein PTR Ressource Record?**
+  **b. Was ist ein PTR Resource Record?**
  
   	ist eine Record zum zuweisen von einen oder mehreren Domainnamen zu einer IP Adresse
   
   **c. Was ist ein MX Record?**
   
-  	ein Eintrag zum denfinieren eines Mail-Server (MailExchange)
+  	ein Eintrag zum definieren eines Mail-Server (MailExchange)
   
   **d. Was sind DNS SRV und wozu können diese genutzt werden?**
   
