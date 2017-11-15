@@ -5,11 +5,25 @@ import client.input.WeatherData;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 
+/**
+ * Weather console handler
+ * It handles the preparation of showing the parsed weather information
+ * inside of the console in form of a simple table.
+ */
 public class WeatherConsoleHandler extends ConsoleHandler {
+
+    /**
+     * Constructor for the console input stream
+     * @param consoleInput the reference to the input stream
+     */
     WeatherConsoleHandler(InputStream consoleInput) {
         super(consoleInput);
     }
 
+    /**
+     * Prints the current weather information to the console
+     * @param weatherInformation our parsed weather information
+     */
     public void printCurrentWeatherData(WeatherData weatherInformation) {
         if (ResponseStatus.OK == weatherInformation.getStatus()) {
 

@@ -15,10 +15,29 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: commons-net:commons-net:3.6" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: commons-net:commons-net:3.6" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: commons-net:commons-net:3.6" level="project" />
+    <orderEntry type="module-library" scope="PROVIDED">
+      <library name="Gradle: commons-net-3.6:6">
+        <CLASSES />
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="RUNTIME">
+      <library name="Gradle: commons-net-3.6:6">
+        <CLASSES />
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.11" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
+    <orderEntry type="module-library" scope="TEST">
+      <library name="Gradle: commons-net-3.6:6">
+        <CLASSES />
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="org.spf4j:spf4j-junit:8.3.3" level="project" />
   </component>
 </module>

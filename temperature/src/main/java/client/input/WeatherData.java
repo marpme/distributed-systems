@@ -6,14 +6,30 @@ import com.sun.istack.internal.Nullable;
 import java.util.DoubleSummaryStatistics;
 import java.util.List;
 
+/**
+ * Weather data storing class
+ */
 public class WeatherData {
 
+    /**
+     * Repsonse status (error, ok, unknown)
+     */
     private final ResponseStatus status;
 
+    /**
+     * Message that we might receive on error or unknown
+     */
+    @Nullable
     private final String errorMessage;
 
+    /**
+     * All temperatures for one day
+     */
     private List<Double> temperatures = null;
 
+    /**
+     * Double statistics including avg, max, min etc
+     */
     private DoubleSummaryStatistics summaryStatistics = null;
 
     public WeatherData(ResponseStatus status, @Nullable String errorMessage, List<Double> temperatures, DoubleSummaryStatistics summaryStatistics) {

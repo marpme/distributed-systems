@@ -7,8 +7,17 @@ import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Weather response handler, extends abstract response handler
+ * which parses response into the given WeatherData class
+ */
 public class WeatherResponseHandler extends ResponseHandler<WeatherData> {
 
+    /**
+     * Gets the parsed output from our response that we received.
+     * This doesn't do the type checks, should be done in the specific class
+     * @return a reference to the parsed weather data
+     */
     @Override
     public WeatherData getParsedOutput() {
         List<String> response = Arrays.stream(getResponseBody().split(";")).collect(Collectors.toList());

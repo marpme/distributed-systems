@@ -1,5 +1,9 @@
 package client.request;
 
+/**
+ * Custom Request Body Exception for showing up
+ * and handling arbitrary body exceptions
+ */
 public class InvalidRequestBodyException extends Exception {
     /**
      * Constructs a new exception with {@code null} as its detail message.

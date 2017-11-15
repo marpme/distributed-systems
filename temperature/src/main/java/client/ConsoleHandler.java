@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Created by Jan Kulose - s0557320 on 02.11.17.
+ * Class to register all events on the console
+ * and listen for possible inputs
  */
 public class ConsoleHandler {
     private List<ConsoleEventListener> listenerList = null;
@@ -17,10 +18,18 @@ public class ConsoleHandler {
         this.consoleInput = consoleInput;
     }
 
+    /**
+     * Adds a custom console event listener
+     * @param listener reference of the listener
+     */
     void add(ConsoleEventListener listener) {
         listenerList.add(listener);
     }
 
+    /**
+     * Removes the listener by search for the reference
+     * @param listener reference of the listener
+     */
     public void remove(ConsoleEventListener listener) {
         listenerList.remove(listener);
     }
@@ -38,6 +47,11 @@ public class ConsoleHandler {
         }
     }
 
+    /**
+     * If events get triggered by the console, then go though all
+     * listeners and notify them.
+     * @param event reference to an event, that was triggered by the console
+     */
     private void notifyEventListeners(ConsoleEvent event) {
         for (ConsoleEventListener listener : listenerList) {
             listener.onConsoleEvent(event);

@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class TemperatureReader {
 
-    private static final String PATH = "C:\\Users\\Kyon\\Desktop\\distributed-systems\\temperature\\src\\main\\resources\\temperatures.csv";
+    private static final String PATH = "/Users/kyon/Desktop/distributed-systems/temperature/src/main/resources/temperatures.csv";
     private static TemperatureReader instance;
     private List<TemperatureHistory> temperatures = null;
 

@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.net.Socket;
 
 /**
- * Created by Jan Kulose - s0557320 on 02.11.17.
+ * Client for gathering weather inforamtion form a
+ * specific server
+ *
+ * Please change the setting details inside of <FILE></FILE>
  */
 public class Client {
     static String serverAddress = "localhost";
