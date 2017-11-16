@@ -1,5 +1,10 @@
 package shared;
 
+import com.opencsv.bean.CsvBindByPosition;
+import com.opencsv.bean.CsvCustomBindByPosition;
+import com.opencsv.bean.CsvDate;
+import server.ConvertListToTemperatures;
+
 import java.util.Date;
 
 public class MeasurePoint {
