@@ -55,7 +55,7 @@ public class TemperatureHandler implements Runnable {
                 dateOfTemp = SDF.parse(clientRequest);
             } catch (ParseException pe) {
                 pe.printStackTrace();
-                out.write("2;Parse Exception for given date.");
+                respond("2; Parse exception for date. Must be in format: yyyy-MM-dd", out);
                 return;
             }
             System.out.println("Registered Date was " + dateOfTemp.toString());
@@ -65,14 +65,18 @@ public class TemperatureHandler implements Runnable {
             String response = history
                     .map(data -> "0;" + data.getWeatherData().stream().collect(Collectors.joining(";")))
                     .orElse("1;No weather data found for your date.");
-            out.println(response);
-            System.out.println("The server's response was (shortened):");
-            System.out.println(response.length() > 20 ?
-                    response.substring(0, 20) + "(...)":
-                    response.substring(0, response.length()-1) + "(...)");
+            respond(response, out);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+
+    private void respond(String response, PrintWriter out) {
+        out.println(response);
+        System.out.println("The server's response was (shortened):");
+        System.out.println(response.length() > 20 ?
+                response.substring(0, 20) + "(...)":
+                response.substring(0, response.length()-1) + "(...)");
     }
 }
