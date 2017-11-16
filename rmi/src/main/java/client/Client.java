@@ -14,6 +14,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +28,6 @@ import java.util.List;
 public class Client implements WeatherClient {
     static String serverAddress = "localhost";
     static int serverPort = 1234;
-    static Socket serverSocket;
 
     public static void main(String[] args) {
         Registry registry;
@@ -38,13 +39,16 @@ public class Client implements WeatherClient {
 
             handler.add(event -> {
                 if (event.getMessage().matches("\\d{4}-\\d{2}-\\d{2}")) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     try {
-                        List<MeasurePoint> measurePoints = stub.getTemperatures(new Date(1990,10,10));
+                        List<MeasurePoint> measurePoints = stub.getTemperatures(sdf.parse(event.getMessage()));
 
                         handler.printCurrentWeatherData(measurePoints);
 
                     } catch (IOException e) {
                         System.out.println("The server had some problems processing our request. Please try again later.");
+                    } catch (ParseException e) {
+                        System.out.println("The date is not a valid date");
                     }
                 }
             });
