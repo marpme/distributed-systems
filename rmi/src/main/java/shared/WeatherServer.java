@@ -1,8 +1,10 @@
-package server;
+package shared;
+
+import server.TemperatureHistory;
+import shared.WeatherClient;
 
 import java.rmi.Remote;
 import java.util.Date;
-import java.util.List;
 
 public interface WeatherServer extends Remote {
 
