@@ -46,7 +46,7 @@ public class WeatherConsoleHandler extends ConsoleHandler {
 
             System.out.format("+-------+-------------+%n");
         } else {
-            System.out.println("Best error on world: " + weatherInformation.getErrorMessage());
+            System.out.println("Error: " + weatherInformation.getErrorMessage());
         }
     }
 }

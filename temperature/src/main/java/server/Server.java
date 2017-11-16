@@ -2,7 +2,6 @@ package server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -11,20 +10,9 @@ import java.util.concurrent.Executors;
  */
 public class Server {
 
-    // Port beliebig
-    // Threads und RMI secure
-    // Stream communication (TCP)
-    // Close reader after use!
-
-    // Client -> requestToServer(YYYY-MM-dd)
-    // server.Server -> response(status;value;value;value;value;value...) starting with 0 o'clock,
-    // status 0 for success, 1 for error
-    //
-
     final static int PORT = 1234;
     final static ExecutorService executer = Executors.newCachedThreadPool();
     static ServerSocket socket;
-    static Socket clientSocket;
 
     public static void main(String[] args) {
         try {
