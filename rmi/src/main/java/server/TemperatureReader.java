@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class TemperatureReader {
 
-    private static final String PATH = "/Users/kyon/Desktop/distributed-systems/rmi/src/main/resources/temperatures.csv";
+    private static final String PATH = "/Users/jankulose/IdeaProjects/distributed-systems/rmi/src/main/resources/temperatures.csv";
     private static TemperatureReader instance;
     private List<TemperatureHistory> temperatures = null;
 

@@ -1,9 +1,11 @@
 package client;
 
 import client.input.WeatherData;
+import shared.MeasurePoint;
 
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.util.List;
 
 /**
  * Weather console handler
@@ -14,6 +16,7 @@ public class WeatherConsoleHandler extends ConsoleHandler {
 
     /**
      * Constructor for the console input stream
+     *
      * @param consoleInput the reference to the input stream
      */
     WeatherConsoleHandler(InputStream consoleInput) {
@@ -22,31 +25,31 @@ public class WeatherConsoleHandler extends ConsoleHandler {
 
     /**
      * Prints the current weather information to the console
+     *
      * @param weatherInformation our parsed weather information
      */
-    public void printCurrentWeatherData(WeatherData weatherInformation) {
-        if (ResponseStatus.OK == weatherInformation.getStatus()) {
+    public void printCurrentWeatherData(List<MeasurePoint> weatherInformation) {
 
-            String leftAlignFormat = "| %02d:00 | %-11s |%n";
-            String statsFormat = "| %-5s | %-11s |%n";
+        String leftAlignFormat = "%tT | %-11s |%n";
+//        String statsFormat = "| %-5s | %-11s |%n";
 
-            System.out.format("+-------+-------------+%n");
-            System.out.format("| Time  | Temperature |%n");
-            System.out.format("+-------+-------------+%n");
+        System.out.format("+-------+-------------+%n");
+        System.out.format("| Time  | Temperature |%n");
+        System.out.format("+-------+-------------+%n");
 
-            for (int i = 0; i < weatherInformation.getTemperatures().size(); i++) {
-                System.out.format(leftAlignFormat, i, weatherInformation.getTemperatures().get(i) + " °C");
-            }
-            System.out.format("+-------+-------------+%n");
-
-            DecimalFormat df = new DecimalFormat("0.0 °C");
-            System.out.format(statsFormat, "AVG", df.format(weatherInformation.getSummaryStatistics().getAverage()));
-            System.out.format(statsFormat, "MIN", df.format(weatherInformation.getSummaryStatistics().getMin()));
-            System.out.format(statsFormat, "MAX", df.format(weatherInformation.getSummaryStatistics().getMax()));
-
-            System.out.format("+-------+-------------+%n");
-        } else {
-            System.out.println("Error: " + weatherInformation.getErrorMessage());
+        for (MeasurePoint measurePoint : weatherInformation) {
+            System.out.format(leftAlignFormat, measurePoint.getTimestamp(), measurePoint.getTemperature() + " °C");
         }
+
+        System.out.format("+-------+-------------+%n");
+
+//        DecimalFormat df = new DecimalFormat("0.0 °C");
+//
+//        System.out.format(statsFormat, "AVG", df.format(weatherInformation.getSummaryStatistics().getAverage()));
+//        System.out.format(statsFormat, "MIN", df.format(weatherInformation.getSummaryStatistics().getMin()));
+//        System.out.format(statsFormat, "MAX", df.format(weatherInformation.getSummaryStatistics().getMax()));
+//
+//        System.out.format("+-------+-------------+%n");
+
     }
 }

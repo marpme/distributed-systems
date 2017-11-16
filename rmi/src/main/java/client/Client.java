@@ -4,9 +4,18 @@ import client.input.WeatherData;
 import client.input.WeatherResponseHandler;
 import client.request.InvalidRequestBodyException;
 import client.request.WeatherRequestHandler;
+import shared.MeasurePoint;
+import shared.WeatherClient;
+import shared.WeatherServer;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Client for gathering weather inforamtion form a
@@ -14,48 +23,56 @@ import java.net.Socket;
  *
  * Please change the setting details inside of <FILE></FILE>
  */
-public class Client {
+public class Client implements WeatherClient {
     static String serverAddress = "localhost";
     static int serverPort = 1234;
     static Socket serverSocket;
 
     public static void main(String[] args) {
-        WeatherConsoleHandler handler = new WeatherConsoleHandler(System.in);
+        Registry registry;
+        try {
+            registry = LocateRegistry.getRegistry(serverAddress, serverPort);
+            WeatherServer stub = (WeatherServer) registry.lookup(WeatherServer.class.getName());
 
-        handler.add(event -> {
-            if (event.getMessage().matches("\\d{4}-\\d{2}-\\d{2}")) {
-                try {
-                    serverSocket = new Socket(serverAddress, serverPort);
-                    WeatherRequestHandler requestHandler = new WeatherRequestHandler(serverSocket);
-                    WeatherResponseHandler responseHandler = new WeatherResponseHandler();
+            WeatherConsoleHandler handler = new WeatherConsoleHandler(System.in);
 
-                    WeatherData weatherInformation = requestHandler
-                            .withRequestBody(event.getMessage())
-                            .send(responseHandler)
-                            .getParsedOutput();
-                    handler.printCurrentWeatherData(weatherInformation);
+            handler.add(event -> {
+                if (event.getMessage().matches("\\d{4}-\\d{2}-\\d{2}")) {
+                    try {
+                        List<MeasurePoint> measurePoints = stub.getTemperatures(new Date(1990,10,10));
 
-                    serverSocket.shutdownInput();
-                    serverSocket.close();
-                } catch (InvalidRequestBodyException e) {
-                    System.out.println("We couldn't proceed with the given Date. Please check your date again and make sure it's in the correct format.");
-                } catch (IOException e) {
-                    System.out.println("The server had some problems processing our request. Please try again later.");
+                        handler.printCurrentWeatherData(measurePoints);
+
+                    } catch (IOException e) {
+                        System.out.println("The server had some problems processing our request. Please try again later.");
+                    }
                 }
-            }
-        });
+            });
 
-        handler.add((ConsoleEvent event) -> {
-            if (event.getMessage().equals("exit")) {
-                System.out.println("Exiting application...");
-                System.exit(0);
-            }
-        });
+            handler.add((ConsoleEvent event) -> {
+                if (event.getMessage().equals("exit")) {
+                    System.out.println("Exiting application...");
+                    System.exit(0);
+                }
+            });
 
-        // blocking
-        handler.start();
+            // blocking
+            handler.start();
+
+        } catch (RemoteException re) {
+            re.printStackTrace();
+        } catch (NotBoundException nbe) {
+            nbe.printStackTrace();
+        }
+
+
+
 
 
     }
 
+    @Override
+    public void updateTemperature(WeatherData measurePoint) {
+
+    }
 }
