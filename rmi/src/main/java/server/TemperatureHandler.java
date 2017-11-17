@@ -1,5 +1,7 @@
 package server;
 
+import shared.MeasurePoint;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -61,11 +63,11 @@ public class TemperatureHandler implements Runnable {
             System.out.println("Registered Date was " + dateOfTemp.toString());
 
             // Temp history
-            Optional<TemperatureHistory> history = TemperatureReader.getInstance().receiveTemperatureForDate(dateOfTemp);
-            String response = history
-                    .map(data -> "0;" + data.getWeatherData().stream().collect(Collectors.joining(";")))
-                    .orElse("1;No weather data found for your date.");
-            respond(response, out);
+            Optional<MeasurePoint> history = TemperatureReader.getInstance().receiveTemperatureForDate(dateOfTemp);
+//            String response = history
+//                    .map(data -> "0;" + data.getWeatherData().stream().collect(Collectors.joining(";")))
+//                    .orElse("1;No weather data found for your date.");
+//            respond(response, out);
         } catch (IOException e) {
             e.printStackTrace();
         }
