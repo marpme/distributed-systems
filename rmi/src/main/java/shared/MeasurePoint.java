@@ -5,9 +5,10 @@ import com.opencsv.bean.CsvCustomBindByPosition;
 import com.opencsv.bean.CsvDate;
 import server.ConvertListToTemperatures;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class MeasurePoint {
+public class MeasurePoint implements Serializable {
 
     Date timestamp;
 

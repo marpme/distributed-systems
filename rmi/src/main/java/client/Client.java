@@ -41,10 +41,7 @@ public class Client implements WeatherClient {
                 if (event.getMessage().matches("\\d{4}-\\d{2}-\\d{2}")) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     try {
-                        List<MeasurePoint> measurePoints = stub.getTemperatures(sdf.parse(event.getMessage()));
-
-                        handler.printCurrentWeatherData(measurePoints);
-
+                        handler.printCurrentWeatherData(stub.getTemperatures(sdf.parse(event.getMessage())));
                     } catch (IOException e) {
                         System.out.println("The server had some problems processing our request. Please try again later.");
                     } catch (ParseException e) {

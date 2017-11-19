@@ -2,10 +2,14 @@ package server;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.apache.commons.lang3.time.DateUtils;
+import org.joda.time.DateTimeComparator;
 import shared.MeasurePoint;
 import sun.awt.image.ImageWatched;
 
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,36 +18,28 @@ import java.util.stream.Collectors;
 
 public class TemperatureReader {
 
-    private static final String PATH = "/Users/jankulose/IdeaProjects/distributed-systems/rmi/src/main/resources/temperatures.csv";
+    private static final String PATH = "C:\\Users\\Kyon\\Desktop\\distributed-systems\\rmi\\src\\main\\resources\\temperatures.csv";
     private static TemperatureReader instance;
-    private List<MeasurePoint> measurePoints = null;
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+    private List<MeasurePoint> measurePoints = new LinkedList<>();
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     private TemperatureReader() {
-        File data = new File(PATH);
-        String s = "";
-        try (BufferedReader br = new BufferedReader(new FileReader(data))) {
-            String line;
+        File csvFile = new File(PATH);
+
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+            String line = "";
             while ((line = br.readLine()) != null) {
-                s += line;
+                try{
+                    measurePoints.add(this.readMeasurePointFromLine(line));
+                } catch(ParseException e) {
+                    e.printStackTrace();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        System.out.println("");
-
-
-//        try {
-//            temperatures = new CsvToBeanBuilder(new FileReader(PATH))
-//                    .withType(MeasurePoint.class)
-//                    .withSeparator(';')
-//                    .withSkipLines(1)
-//                    .build()
-//                    .parse();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
     }
 
     static synchronized TemperatureReader getInstance() {
@@ -55,34 +51,24 @@ public class TemperatureReader {
     }
 
 
+    private MeasurePoint readMeasurePointFromLine(String line) throws ParseException{
+        String[] data = line.split(";");
+        if(data.length != 5) {
+            throw new ParseException("Invalid format detected", 0);
+        } else {
+            Date date = sdf.parse(data[0] + "." + data[1] + "." + data[2] + " " + data[3] + ":00");
+            return new MeasurePoint(date, Float.parseFloat(data[4]));
+        }
+    }
+
     Optional<MeasurePoint> receiveTemperatureForDate(Date date) {
         return measurePoints.stream().filter(measurePoint -> measurePoint.getTimestamp().equals(date)).findFirst();
     }
 
     List<MeasurePoint> receiveMeasurePoints(Date date) {
-//        try {
-//            Optional<TemperatureHistory> optionalTemps = temperatures.stream().filter(temp -> temp.getDate().equals(date)).findFirst();
-//            if (optionalTemps.isPresent()) {
-//
-//                TemperatureHistory temperature = optionalTemps.get();
-//                List<MeasurePoint> measurements = new LinkedList<>();
-//
-//                for (int i = 0; i < temperature.getWeatherData().size(); i++) {
-//                    MeasurePoint measure = new MeasurePoint(
-//                            DateUtils.addHours(temperature.getDate(), i),
-//                            Float.parseFloat(temperature.getWeatherData().get(i))
-//                    );
-//
-//                    measurements.add(measure);
-//                }
-//
-//                return measurements;
-//            } else {
-//                return new LinkedList<>();
-//            }
-//        } catch (NumberFormatException e) {
-//            return new LinkedList<>();
-//        }
-        return measurePoints;
+        return measurePoints.stream().filter(m -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            return sdf.format(m.getTimestamp()).equals(sdf.format(date));
+        }).collect(Collectors.toList());
     }
 }
