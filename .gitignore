@@ -20,3 +20,32 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+.gradle
+/build/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Cache of project
+.gradletasknamecache
+
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
+program/src/main/resources/
+program/src/test/
+rmi/build/
+rmi/gradle/
+rmi/gradlew
+rmi/gradlew.bat
+rmi/out/production/resources/
+rmi/src/test/
+temperature/build.gradle
+temperature/build/
+temperature/gradle/wrapper/gradle-wrapper.jar
+temperature/out/production/resources/
+temperature/settings.gradle
+temperature/src/test/
