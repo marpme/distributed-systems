@@ -64,10 +64,6 @@ public class TemperatureHandler implements Runnable {
 
             // Temp history
             Optional<MeasurePoint> history = TemperatureReader.getInstance().receiveTemperatureForDate(dateOfTemp);
-//            String response = history
-//                    .map(data -> "0;" + data.getWeatherData().stream().collect(Collectors.joining(";")))
-//                    .orElse("1;No weather data found for your date.");
-//            respond(response, out);
         } catch (IOException e) {
             e.printStackTrace();
         }

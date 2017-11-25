@@ -4,6 +4,7 @@ import client.input.WeatherData;
 import client.input.WeatherResponseHandler;
 import client.request.InvalidRequestBodyException;
 import client.request.WeatherRequestHandler;
+import shared.InsufficientMeasurePointsException;
 import shared.MeasurePoint;
 import shared.WeatherClient;
 import shared.WeatherServer;
@@ -28,6 +29,7 @@ import java.util.List;
 public class Client implements WeatherClient {
     static String serverAddress = "localhost";
     static int serverPort = 1234;
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public static void main(String[] args) {
         Registry registry;
@@ -38,16 +40,19 @@ public class Client implements WeatherClient {
             WeatherConsoleHandler handler = new WeatherConsoleHandler(System.in);
 
             handler.add(event -> {
-                if (event.getMessage().matches("\\d{4}-\\d{2}-\\d{2}")) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                if (event.getMessage().matches("([0-9]{4})-([0-9]{2})-([0-9]{2})")) {
                     try {
                         handler.printCurrentWeatherData(stub.getTemperatures(sdf.parse(event.getMessage())));
-                    } catch (IOException e) {
-                        System.out.println("The server had some problems processing our request. Please try again later.");
+                    } catch (RemoteException  e) {
+                        System.out.println(e.detail.getMessage());
                     } catch (ParseException e) {
                         System.out.println("The date is not a valid date");
                     }
+                } else if(!event.getMessage().contains("exit")) {
+                    System.out.println("The date is not a valid date");
+                    System.out.println("Please try again with the following format: 'YYYY-MM-DD'");
                 }
+                System.out.println();
             });
 
             handler.add((ConsoleEvent event) -> {
@@ -60,14 +65,9 @@ public class Client implements WeatherClient {
             // blocking
             handler.start();
 
-        } catch (RemoteException re) {
+        } catch (RemoteException | NotBoundException re) {
             re.printStackTrace();
-        } catch (NotBoundException nbe) {
-            nbe.printStackTrace();
         }
-
-
-
 
 
     }
