@@ -11,7 +11,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class TemperatureHandler implements Runnable {
 
@@ -74,7 +73,7 @@ public class TemperatureHandler implements Runnable {
         out.println(response);
         System.out.println("The server's response was (shortened):");
         System.out.println(response.length() > 20 ?
-                response.substring(0, 20) + "(...)":
-                response.substring(0, response.length()-1) + "(...)");
+                response.substring(0, 20) + "(...)" :
+                response.substring(0, response.length() - 1) + "(...)");
     }
 }

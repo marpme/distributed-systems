@@ -1,29 +1,20 @@
 package client;
 
 import client.input.WeatherData;
-import client.input.WeatherResponseHandler;
-import client.request.InvalidRequestBodyException;
-import client.request.WeatherRequestHandler;
-import shared.InsufficientMeasurePointsException;
-import shared.MeasurePoint;
 import shared.WeatherClient;
 import shared.WeatherServer;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Client for gathering weather inforamtion form a
  * specific server
- *
+ * <p>
  * Please change the setting details inside of <FILE></FILE>
  */
 public class Client implements WeatherClient {
@@ -43,12 +34,12 @@ public class Client implements WeatherClient {
                 if (event.getMessage().matches("([0-9]{4})-([0-9]{2})-([0-9]{2})")) {
                     try {
                         handler.printCurrentWeatherData(stub.getTemperatures(sdf.parse(event.getMessage())));
-                    } catch (RemoteException  e) {
+                    } catch (RemoteException e) {
                         System.out.println(e.detail.getMessage());
                     } catch (ParseException e) {
                         System.out.println("The date is not a valid date");
                     }
-                } else if(!event.getMessage().contains("exit")) {
+                } else if (!event.getMessage().contains("exit")) {
                     System.out.println("The date is not a valid date");
                     System.out.println("Please try again with the following format: 'YYYY-MM-DD'");
                 }

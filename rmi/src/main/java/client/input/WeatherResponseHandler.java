@@ -16,6 +16,7 @@ public class WeatherResponseHandler extends ResponseHandler<WeatherData> {
     /**
      * Gets the parsed output from our response that we received.
      * This doesn't do the type checks, should be done in the specific class
+     *
      * @return a reference to the parsed weather data
      */
     @Override
@@ -26,7 +27,7 @@ public class WeatherResponseHandler extends ResponseHandler<WeatherData> {
         ResponseStatus status = ResponseStatus.fromInt(statusCode);
 
         String errorMessage = null;
-        
+
         if (status == ResponseStatus.ERROR) {
             errorMessage = response.get(0);
             return new WeatherData(status, errorMessage);

@@ -13,7 +13,8 @@ public class ConsoleEvent extends EventObject {
 
     /**
      * Constructor
-     * @param source Input stream from source (Console)
+     *
+     * @param source  Input stream from source (Console)
      * @param message Message from the console
      */
     public ConsoleEvent(InputStream source, String message) {
@@ -23,6 +24,7 @@ public class ConsoleEvent extends EventObject {
 
     /**
      * Gets the message from the current event
+     *
      * @return a String with the message from the console
      */
     public String getMessage() {

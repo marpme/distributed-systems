@@ -1,6 +1,5 @@
 package client;
 
-import client.input.WeatherData;
 import shared.MeasurePoint;
 
 import java.io.InputStream;

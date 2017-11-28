@@ -19,6 +19,7 @@ public class WeatherRequestHandler extends RequestHandler<String, WeatherRespons
 
     /**
      * Constructor
+     *
      * @param serverSocket server socket which should be used for sending requests to
      */
     public WeatherRequestHandler(Socket serverSocket) {

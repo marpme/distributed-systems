@@ -1,8 +1,5 @@
 package server;
 
-import java.util.logging.*;
-
-import com.sun.org.apache.regexp.internal.RE;
 import shared.InsufficientMeasurePointsException;
 import shared.MeasurePoint;
 import shared.WeatherClient;
@@ -14,6 +11,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -22,16 +20,31 @@ import java.util.logging.Logger;
 public class Server implements WeatherServer {
 
     final static int PORT = 1234;
+    private static final Logger log = Logger.getLogger(Server.class.getName());
     private static Registry registry;
     private List<WeatherClient> clients;
-    private static final Logger log = Logger.getLogger(Server.class.getName());
+
+    public static void main(String[] args) {
+        try {
+            registry = LocateRegistry.createRegistry(PORT);
+
+            Server server = new Server();
+            WeatherServer stub = (WeatherServer) UnicastRemoteObject.exportObject(server, PORT);
+
+            registry.rebind(WeatherServer.class.getName(), stub);
+            log.info("Startup succedded");
+            log.info("RMI bind on port: " + PORT);
+        } catch (RemoteException e) {
+            log.log(Level.SEVERE, "Startup failed: ", e);
+        }
+    }
 
     @Override
     public List<MeasurePoint> getTemperatures(Date searchDate) throws RemoteException {
         log.info("Client requested weather information for Date " + searchDate);
 
         List<MeasurePoint> measurePoints = TemperatureReader.getInstance().receiveMeasurePoints(searchDate);
-        if(measurePoints.size() != 24){
+        if (measurePoints.size() != 24) {
             String exception = "Insufficient measurements for the given date: " + searchDate;
             log.warning(exception);
             throw new InsufficientMeasurePointsException(exception);
@@ -50,21 +63,6 @@ public class Server implements WeatherServer {
     public boolean deregister(WeatherClient client) throws RemoteException {
         log.info("Client deregistered successfully.");
         return clients.remove(client);
-    }
-
-    public static void main(String[] args) {
-        try {
-            registry = LocateRegistry.createRegistry(PORT);
-
-            Server server = new Server();
-            WeatherServer stub = (WeatherServer) UnicastRemoteObject.exportObject(server, PORT);
-
-            registry.rebind(WeatherServer.class.getName(), stub);
-            log.info("Startup succedded");
-            log.info("RMI bind on port: " + PORT);
-        } catch (RemoteException e) {
-            log.log(Level.SEVERE, "Startup failed: ", e);
-        }
     }
 }
 

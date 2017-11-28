@@ -1,8 +1,5 @@
 package shared;
 
-import server.TemperatureHistory;
-import shared.WeatherClient;
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Date;

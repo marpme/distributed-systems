@@ -1,15 +1,13 @@
 package server;
 
-import com.opencsv.bean.CsvToBeanBuilder;
-import org.apache.commons.lang3.time.DateUtils;
-import org.joda.time.DateTimeComparator;
 import shared.MeasurePoint;
-import sun.awt.image.ImageWatched;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,9 +28,9 @@ public class TemperatureReader {
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             String line = "";
             while ((line = br.readLine()) != null) {
-                try{
+                try {
                     measurePoints.add(this.readMeasurePointFromLine(line));
-                } catch(ParseException e) {
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
             }
@@ -51,9 +49,9 @@ public class TemperatureReader {
     }
 
 
-    private MeasurePoint readMeasurePointFromLine(String line) throws ParseException{
+    private MeasurePoint readMeasurePointFromLine(String line) throws ParseException {
         String[] data = line.split(";");
-        if(data.length != 5) {
+        if (data.length != 5) {
             throw new ParseException("Invalid format detected", 0);
         } else {
             Date date = sdf.parse(data[0] + "." + data[1] + "." + data[2] + " " + data[3] + ":00");

@@ -20,6 +20,7 @@ public class ConsoleHandler {
 
     /**
      * Adds a custom console event listener
+     *
      * @param listener reference of the listener
      */
     void add(ConsoleEventListener listener) {
@@ -28,6 +29,7 @@ public class ConsoleHandler {
 
     /**
      * Removes the listener by search for the reference
+     *
      * @param listener reference of the listener
      */
     public void remove(ConsoleEventListener listener) {
@@ -50,6 +52,7 @@ public class ConsoleHandler {
     /**
      * If events get triggered by the console, then go though all
      * listeners and notify them.
+     *
      * @param event reference to an event, that was triggered by the console
      */
     private void notifyEventListeners(ConsoleEvent event) {

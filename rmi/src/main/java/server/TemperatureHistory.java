@@ -3,7 +3,6 @@ package server;
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvCustomBindByPosition;
 import com.opencsv.bean.CsvDate;
-import shared.MeasurePoint;
 
 import java.io.Serializable;
 import java.util.Date;
