@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/distributed-systems-rmi.iml" filepath="$PROJECT_DIR$/.idea/modules/distributed-systems-rmi.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/program.iml" filepath="$PROJECT_DIR$/.idea/modules/program.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rmi.iml" filepath="$PROJECT_DIR$/.idea/modules/rmi.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/temperature.iml" filepath="$PROJECT_DIR$/.idea/modules/temperature.iml" />

@@ -48,4 +48,5 @@ temperature/build/
 temperature/gradle/wrapper/gradle-wrapper.jar
 temperature/out/production/resources/
 temperature/settings.gradle
-temperature/src/test/
+
+.idea
