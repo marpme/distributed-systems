@@ -1,6 +1,7 @@
 package client;
 
 import client.input.WeatherData;
+import shared.MeasurePoint;
 import shared.WeatherClient;
 import shared.WeatherServer;
 
@@ -27,6 +28,8 @@ public class Client implements WeatherClient {
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public static void main(String[] args) {
+        System.out.println("Client started.");
+
         Registry registry;
         try {
             registry = LocateRegistry.getRegistry(serverAddress, serverPort);
@@ -35,35 +38,49 @@ public class Client implements WeatherClient {
             handler = new WeatherConsoleHandler(System.in);
 
             handler.add(event -> {
-                if (event.getMessage().equals("exit")) {
+                if (event.getMessage().trim().equals("exit")) {
                     System.out.println("Exiting application...");
+                    System.exit(0);
+                    //TODO Shutdownhook for deregistering
+                } else if (event.getMessage().trim().equals("autoupdate on")) {
+                    System.out.println("Autoupdate turned on");
+                    updateMe = true;
+                } else if (event.getMessage().trim().equals("autoupdate off")) {
+                    System.out.println("Autoupdate turned off");
+                    updateMe = true;
                 } else {
-                        try {
-                            Date day = sdf.parse(event.getMessage());
-                            weatherData.addMeasurePoints(stub.getTemperatures(day));
-                            handler.printCurrentWeatherData(weatherData.getDay(day));
-                        } catch (RemoteException e) {
-                            System.out.println(e.detail.getMessage());
-                        } catch (ParseException e) {
-                            System.out.println("The date is not a valid date");
-                        }
+                    try {
+                        Date day = sdf.parse(event.getMessage().trim());
+                        weatherData.addMeasurePoints(stub.getTemperatures(day));
+                        handler.printCurrentWeatherData(weatherData.getDay(day));
+                    } catch (RemoteException e) {
+                        System.out.println(e.detail.getMessage());
+                    } catch (ParseException e) {
+                        System.out.println("The date is not a valid date");
                     }
+                }
             });
 
             // blocking
             handler.start();
 
         } catch (RemoteException | NotBoundException re) {
-            re.printStackTrace();
+            System.out.println("We have encountered an error processing the request:\n" + re.getMessage());
         }
 
 
     }
 
     @Override
-    public void updateTemperature(WeatherData measurePoint) {
+    public void updateTemperature(MeasurePoint measurePoint) {
+        weatherData.modifyMeasurePoint(measurePoint);
         if (updateMe) {
+            handler.printUpdatedWeatherData(measurePoint);
 //            handler.printCurrentWeatherData()
         }
+    }
+
+    public static WeatherData getWeatherData() {
+        return weatherData;
     }
 }
