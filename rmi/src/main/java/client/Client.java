@@ -10,6 +10,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Client for gathering weather inforamtion form a
@@ -20,6 +21,9 @@ import java.text.SimpleDateFormat;
 public class Client implements WeatherClient {
     static String serverAddress = "localhost";
     static int serverPort = 1234;
+    static boolean updateMe = true;
+    static WeatherData weatherData = new WeatherData();
+    static WeatherConsoleHandler handler;
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public static void main(String[] args) {
@@ -28,29 +32,22 @@ public class Client implements WeatherClient {
             registry = LocateRegistry.getRegistry(serverAddress, serverPort);
             WeatherServer stub = (WeatherServer) registry.lookup(WeatherServer.class.getName());
 
-            WeatherConsoleHandler handler = new WeatherConsoleHandler(System.in);
+            handler = new WeatherConsoleHandler(System.in);
 
             handler.add(event -> {
-                if (event.getMessage().matches("([0-9]{4})-([0-9]{2})-([0-9]{2})")) {
-                    try {
-                        handler.printCurrentWeatherData(stub.getTemperatures(sdf.parse(event.getMessage())));
-                    } catch (RemoteException e) {
-                        System.out.println(e.detail.getMessage());
-                    } catch (ParseException e) {
-                        System.out.println("The date is not a valid date");
-                    }
-                } else if (!event.getMessage().contains("exit")) {
-                    System.out.println("The date is not a valid date");
-                    System.out.println("Please try again with the following format: 'YYYY-MM-DD'");
-                }
-                System.out.println();
-            });
-
-            handler.add((ConsoleEvent event) -> {
                 if (event.getMessage().equals("exit")) {
                     System.out.println("Exiting application...");
-                    System.exit(0);
-                }
+                } else {
+                        try {
+                            Date day = sdf.parse(event.getMessage());
+                            weatherData.addMeasurePoints(stub.getTemperatures(day));
+                            handler.printCurrentWeatherData(weatherData.getDay(day));
+                        } catch (RemoteException e) {
+                            System.out.println(e.detail.getMessage());
+                        } catch (ParseException e) {
+                            System.out.println("The date is not a valid date");
+                        }
+                    }
             });
 
             // blocking
@@ -65,6 +62,8 @@ public class Client implements WeatherClient {
 
     @Override
     public void updateTemperature(WeatherData measurePoint) {
-
+        if (updateMe) {
+//            handler.printCurrentWeatherData()
+        }
     }
 }

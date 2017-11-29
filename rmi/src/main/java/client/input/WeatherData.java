@@ -1,10 +1,15 @@
 package client.input;
 
-import client.ResponseStatus;
-import com.sun.istack.internal.Nullable;
+import shared.MeasurePoint;
 
-import java.util.DoubleSummaryStatistics;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Weather data storing class
@@ -12,51 +17,48 @@ import java.util.List;
 public class WeatherData {
 
     /**
-     * Repsonse status (error, ok, unknown)
+     * All temperature data
      */
-    private final ResponseStatus status;
+    private List<MeasurePoint> measurePoints = null;
 
-    /**
-     * Message that we might receive on error or unknown
-     */
-    @Nullable
-    private final String errorMessage;
-
-    /**
-     * All temperatures for one day
-     */
-    private List<Double> temperatures = null;
-
-    /**
-     * Double statistics including avg, max, min etc
-     */
-    private DoubleSummaryStatistics summaryStatistics = null;
-
-    public WeatherData(ResponseStatus status, @Nullable String errorMessage, List<Double> temperatures, DoubleSummaryStatistics summaryStatistics) {
-        this.status = status;
-        this.errorMessage = errorMessage;
-        this.temperatures = temperatures;
-        this.summaryStatistics = summaryStatistics;
+    public WeatherData() {
+        this.measurePoints = new ArrayList<>();
     }
 
-    public WeatherData(ResponseStatus status, String errorMessage) {
-        this.status = status;
-        this.errorMessage = errorMessage;
+    public void addMeasurePoints(List<MeasurePoint> measurePoints) {
+        if (measurePoints.stream()
+                .filter(distinctByKey(MeasurePoint::getTimestamp))
+                .collect(Collectors.toList())
+                .size() != measurePoints.size()) {
+            throw new IllegalArgumentException("Duplicate data found in request");
+        }
+        this.measurePoints.addAll(measurePoints);
     }
 
-    public ResponseStatus getStatus() {
-        return status;
+    public void modifyMeasurePoint(MeasurePoint measurePoint) {
+        measurePoints.removeIf(point -> point.getTimestamp() == measurePoint.getTimestamp());
+        measurePoints.add(measurePoint);
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public List<MeasurePoint> getMeasurePoints() {
+        return measurePoints;
     }
 
-    public List<Double> getTemperatures() {
-        return temperatures;
+    public List<MeasurePoint> getDay(Date date) {
+        return measurePoints.stream().filter(measurePoint ->
+                measurePoint.getTimestamp().equals(date))
+                .collect(Collectors.toList());
     }
 
-    public DoubleSummaryStatistics getSummaryStatistics() {
-        return summaryStatistics;
+    public boolean hasDataForDate(Date date) {
+        return measurePoints.stream().filter(measurePoint ->
+                measurePoint.getTimestamp().equals(date))
+                .collect(Collectors.toList())
+                .size() == 24;
+    }
+
+    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Set<Object> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
     }
 }
