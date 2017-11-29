@@ -35,13 +35,14 @@ public class Client implements WeatherClient {
             registry = LocateRegistry.getRegistry(serverAddress, serverPort);
             WeatherServer stub = (WeatherServer) registry.lookup(WeatherServer.class.getName());
 
+            // stub.register(); ???
             handler = new WeatherConsoleHandler(System.in);
 
             handler.add(event -> {
                 if (event.getMessage().trim().equals("exit")) {
                     System.out.println("Exiting application...");
                     System.exit(0);
-                    //TODO Shutdownhook for deregistering
+                    //TODO Shutdownhook for deregistering?
                 } else if (event.getMessage().trim().equals("autoupdate on")) {
                     System.out.println("Autoupdate turned on");
                     updateMe = true;
@@ -53,6 +54,7 @@ public class Client implements WeatherClient {
                         Date day = sdf.parse(event.getMessage().trim());
                         weatherData.addMeasurePoints(stub.getTemperatures(day));
                         handler.printCurrentWeatherData(weatherData.getDay(day));
+                        System.out.println();
                     } catch (RemoteException e) {
                         System.out.println(e.detail.getMessage());
                     } catch (ParseException e) {
@@ -76,7 +78,6 @@ public class Client implements WeatherClient {
         weatherData.modifyMeasurePoint(measurePoint);
         if (updateMe) {
             handler.printUpdatedWeatherData(measurePoint);
-//            handler.printCurrentWeatherData()
         }
     }
 

@@ -2,6 +2,7 @@ package client.input;
 
 import shared.MeasurePoint;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,14 +46,18 @@ public class WeatherData {
     }
 
     public List<MeasurePoint> getDay(Date date) {
-        return measurePoints.stream().filter(measurePoint ->
-                measurePoint.getTimestamp().equals(date))
+        return measurePoints.stream().filter(measurePoint -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            return sdf.format(measurePoint.getTimestamp()).equals(sdf.format(date));
+        })
                 .collect(Collectors.toList());
     }
 
     public boolean hasDataForDate(Date date) {
-        return measurePoints.stream().filter(measurePoint ->
-                measurePoint.getTimestamp().equals(date))
+        return measurePoints.stream().filter(measurePoint -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            return sdf.format(measurePoint.getTimestamp()).equals(sdf.format(date));
+        })
                 .collect(Collectors.toList())
                 .size() == 24;
     }
