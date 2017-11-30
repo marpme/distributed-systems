@@ -44,8 +44,7 @@ public class ConsoleHandler implements Serializable {
             while (scanner.ioException() == null && running) {
                 System.out.println("Please enter:\n" +
                         "\"YYYY-MM-DD\" to receive the temperature readings for that date\n" +
-                        "\"autoupdate off\" to turn off autoupdate messages\n" +
-                        "\"autoupdate on\" to turn on autoupdate messages (DEFAULT)\n" +
+                        "\"autoupdate\" to switch on/off automatic update messages (default: on)\n" +
                         "\"exit\" to exit the application");
                 String message = scanner.next();
                 notifyEventListeners(new ConsoleEvent(consoleInput, message));

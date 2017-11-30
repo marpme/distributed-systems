@@ -21,24 +21,24 @@ import java.util.Date;
  * Please change the setting details inside of <FILE></FILE>
  */
 class Client implements WeatherClient, Serializable {
+
     private static final long serialVersionUID = 878457870984L;
     private String serverAddress = "localhost";
     private int serverPort = 1234;
+
     private boolean updateMe = true;
+
     private WeatherData weatherData = new WeatherData();
     private WeatherConsoleHandler handler;
     private WeatherServer stub;
+
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     void run(String[] args) {
         System.out.println("Client started.");
 
         // shutdown hook for deregistering
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
-                shutdown();
-            }
-        });
+        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
 
         Registry registry;
         try {
@@ -52,12 +52,11 @@ class Client implements WeatherClient, Serializable {
             handler.add(event -> {
                 if (event.getMessage().trim().equals("exit")) {
                     System.exit(0);
-                } else if (event.getMessage().trim().equals("autoupdate on")) {
-                    System.out.println("Autoupdate turned on");
-                    updateMe = true;
-                } else if (event.getMessage().trim().equals("autoupdate off")) {
-                    System.out.println("Autoupdate turned off");
-                    updateMe = true;
+                } else if (event.getMessage().contains("autoupdate")) {
+                    this.updateMe = !this.updateMe;
+                    System.out.println(updateMe
+                            ? "Automatic updates turned - on -!"
+                            : "Automatic updates turned - off -!");
                 } else {
                     try {
                         Date day = sdf.parse(event.getMessage().trim());
@@ -70,6 +69,7 @@ class Client implements WeatherClient, Serializable {
                         System.out.println("Invalid input.");
                     }
                 }
+                System.out.println();
             });
 
             // blocking

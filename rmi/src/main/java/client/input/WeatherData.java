@@ -57,7 +57,7 @@ public class WeatherData implements Serializable {
                 }).collect(Collectors.toList());
         // sorting by time
         if (result != null) {
-            Collections.sort(result, (o1, o2) -> o1.getTimestamp().compareTo(o2.getTimestamp()));
+            Collections.sort(result, Comparator.comparing(MeasurePoint::getTimestamp));
         }
         return result;
     }
