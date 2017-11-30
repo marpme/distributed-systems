@@ -43,10 +43,6 @@ public class WeatherData implements Serializable {
         measurePoints.add(measurePoint);
     }
 
-    public List<MeasurePoint> getMeasurePoints() {
-        return measurePoints;
-    }
-
     public List<MeasurePoint> getDay(Date date) {
         return measurePoints.stream().filter(measurePoint -> {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -62,6 +58,10 @@ public class WeatherData implements Serializable {
         })
                 .collect(Collectors.toList())
                 .size() == 24;
+    }
+
+    public List<MeasurePoint> getMeasurePoints() {
+        return measurePoints;
     }
 
     private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {

@@ -14,6 +14,7 @@ public class ConsoleHandler implements Serializable {
     private static final long serialVersionUID = 46781256467L;
     private List<ConsoleEventListener> listenerList = null;
     private InputStream consoleInput = null;
+    private boolean running = true;
 
     ConsoleHandler(InputStream consoleInput) {
         listenerList = new ArrayList<>();
@@ -40,7 +41,7 @@ public class ConsoleHandler implements Serializable {
 
     void start() {
         try (Scanner scanner = new Scanner(consoleInput)) {
-            while (scanner.ioException() == null) {
+            while (scanner.ioException() == null && running) {
                 System.out.println("Please enter:\n" +
                         "\"YYYY-MM-DD\" to receive the temperature readings for that date\n" +
                         "\"autoupdate off\" to turn off autoupdate messages\n" +
@@ -54,6 +55,13 @@ public class ConsoleHandler implements Serializable {
     }
 
     /**
+     * shuts the handler down and closes streams
+     */
+    public void shutdown() {
+        running = false;
+    }
+
+    /**
      * If events get triggered by the console, then go though all
      * listeners and notify them.
      *
@@ -63,9 +71,5 @@ public class ConsoleHandler implements Serializable {
         for (ConsoleEventListener listener : listenerList) {
             listener.onConsoleEvent(event);
         }
-    }
-
-    public InputStream getConsoleInput() {
-        return consoleInput;
     }
 }

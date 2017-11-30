@@ -60,6 +60,11 @@ public class WeatherConsoleHandler extends ConsoleHandler {
 
     }
 
+    /**
+     * Prints weather information and highlights changes
+     * @param client source of weather information
+     * @param changedPoint changed measurepoint
+     */
     public void printUpdatedWeatherData(Client client, MeasurePoint changedPoint) {
         List<MeasurePoint> weatherInformation = client.getWeatherData().getDay(changedPoint.getTimestamp());
 
