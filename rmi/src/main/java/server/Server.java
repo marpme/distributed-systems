@@ -4,14 +4,18 @@ import shared.InsufficientMeasurePointsException;
 import shared.MeasurePoint;
 import shared.WeatherClient;
 import shared.WeatherServer;
+import shared.console.WeatherConsoleListener;
 
+import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,7 +27,13 @@ public class Server implements WeatherServer {
     final static int PORT = 1234;
     private static final Logger log = Logger.getLogger(Server.class.getName());
     private static Registry registry;
-    private List<WeatherClient> clients = new ArrayList<>();
+    private Thread consoleListener;
+    private List<WeatherClient> clients = new CopyOnWriteArrayList<>();
+
+    public Server() {
+        this.consoleListener = new Thread(new WeatherConsoleListener(System.in, this.clients));
+        this.consoleListener.start();
+    }
 
     public static void main(String[] args) {
         try {

@@ -10,6 +10,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,10 +45,12 @@ class Client implements WeatherClient, Serializable {
         try {
             registry = LocateRegistry.getRegistry(serverAddress, serverPort);
             stub = (WeatherServer) registry.lookup(WeatherServer.class.getName());
-            // registering client
-            stub.register(this);
 
             handler = new WeatherConsoleHandler(System.in);
+
+            WeatherClient clientStub = (WeatherClient) UnicastRemoteObject.exportObject(this, 0);
+            // registering client
+            stub.register(clientStub);
 
             handler.add(event -> {
                 if (event.getMessage().trim().equals("exit")) {
@@ -81,9 +84,9 @@ class Client implements WeatherClient, Serializable {
     }
 
     @Override
-    public void updateTemperature(MeasurePoint measurePoint) {
+    public void updateTemperature(MeasurePoint measurePoint) throws RemoteException {
         weatherData.modifyMeasurePoint(measurePoint);
-        if (updateMe) {
+        if (this.updateMe) {
             handler.printUpdatedWeatherData(this, measurePoint);
         }
     }

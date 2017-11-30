@@ -8,18 +8,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 public class TemperatureReader {
 
-    private static final String PATH = "C:\\Users\\Kyon\\Desktop\\distributed-systems\\rmi\\src\\main\\resources\\temperatures.csv";
+    private static final String PATH = "/Users/kyon/Desktop/distributed-systems/rmi/src/main/resources/temperatures.csv";
     private static TemperatureReader instance;
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-    private List<MeasurePoint> measurePoints = new LinkedList<>();
+    private List<MeasurePoint> measurePoints = new CopyOnWriteArrayList<>();
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     private TemperatureReader() {
@@ -40,7 +38,7 @@ public class TemperatureReader {
 
     }
 
-    static synchronized TemperatureReader getInstance() {
+    public static synchronized TemperatureReader getInstance() {
         if (TemperatureReader.instance == null) {
             TemperatureReader.instance = new TemperatureReader();
         }
@@ -59,14 +57,23 @@ public class TemperatureReader {
         }
     }
 
-    Optional<MeasurePoint> receiveTemperatureForDate(Date date) {
-        return measurePoints.stream().filter(measurePoint -> measurePoint.getTimestamp().equals(date)).findFirst();
+    public Optional<MeasurePoint> receiveTemperatureForDate(Date date) {
+        return measurePoints.stream().filter(measurePoint ->
+                measurePoint.getTimestamp().equals(date)
+        ).findFirst();
     }
 
-    List<MeasurePoint> receiveMeasurePoints(Date date) {
-        return measurePoints.stream().filter(m -> {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            return sdf.format(m.getTimestamp()).equals(sdf.format(date));
-        }).collect(Collectors.toList());
+    public List<MeasurePoint> receiveMeasurePoints(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        return measurePoints.stream().filter(m ->
+                sdf.format(m.getTimestamp()).equals(sdf.format(date))
+        ).collect(Collectors.toList());
+    }
+
+    public Optional<MeasurePoint> receiveExactMeasurePoints(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm");
+        return measurePoints.stream().filter(m ->
+                sdf.format(m.getTimestamp()).equals(sdf.format(date))
+        ).findFirst();
     }
 }

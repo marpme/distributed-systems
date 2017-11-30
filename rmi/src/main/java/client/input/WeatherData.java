@@ -40,7 +40,7 @@ public class WeatherData implements Serializable {
      * @param measurePoint the updated measurepoint
      */
     public void modifyMeasurePoint(MeasurePoint measurePoint) {
-        measurePoints.removeIf(point -> point.getTimestamp() == measurePoint.getTimestamp());
+        measurePoints.removeIf(point -> point.getTimestamp().equals(measurePoint.getTimestamp()));
         measurePoints.add(measurePoint);
     }
 

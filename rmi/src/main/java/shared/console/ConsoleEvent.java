@@ -1,4 +1,4 @@
-package client;
+package shared.console;
 
 import java.io.InputStream;
 import java.util.EventObject;

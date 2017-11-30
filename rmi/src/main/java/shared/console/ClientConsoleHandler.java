@@ -1,4 +1,4 @@
-package client;
+package shared.console;
 
 import java.io.InputStream;
 import java.io.Serializable;
@@ -10,13 +10,13 @@ import java.util.Scanner;
  * Class to register all events on the console
  * and listen for possible inputs
  */
-public class ConsoleHandler implements Serializable {
+public class ClientConsoleHandler implements Serializable {
     private static final long serialVersionUID = 46781256467L;
     private List<ConsoleEventListener> listenerList = null;
     private InputStream consoleInput = null;
     private boolean running = true;
 
-    ConsoleHandler(InputStream consoleInput) {
+    public ClientConsoleHandler(InputStream consoleInput) {
         listenerList = new ArrayList<>();
         this.consoleInput = consoleInput;
     }
@@ -26,7 +26,7 @@ public class ConsoleHandler implements Serializable {
      *
      * @param listener reference of the listener
      */
-    void add(ConsoleEventListener listener) {
+    public void add(ConsoleEventListener listener) {
         listenerList.add(listener);
     }
 
@@ -39,7 +39,7 @@ public class ConsoleHandler implements Serializable {
         listenerList.remove(listener);
     }
 
-    void start() {
+    public void start() {
         try (Scanner scanner = new Scanner(consoleInput)) {
             while (scanner.ioException() == null && running) {
                 System.out.println("Please enter:\n" +
