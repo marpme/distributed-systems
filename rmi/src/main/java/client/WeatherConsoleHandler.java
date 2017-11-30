@@ -3,6 +3,7 @@ package client;
 import shared.MeasurePoint;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,7 +16,6 @@ import java.util.List;
  * inside of the console in form of a simple table.
  */
 public class WeatherConsoleHandler extends ConsoleHandler {
-
     private SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
 
     /**
@@ -60,8 +60,8 @@ public class WeatherConsoleHandler extends ConsoleHandler {
 
     }
 
-    public void printUpdatedWeatherData(MeasurePoint changedPoint) {
-        List<MeasurePoint> weatherInformation = Client.getWeatherData().getDay(changedPoint.getTimestamp());
+    public void printUpdatedWeatherData(Client client, MeasurePoint changedPoint) {
+        List<MeasurePoint> weatherInformation = client.getWeatherData().getDay(changedPoint.getTimestamp());
 
         String statsFormat = "| %-5s | %-11s |";
         DecimalFormat df = new DecimalFormat("0.0 °C");

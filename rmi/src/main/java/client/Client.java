@@ -5,6 +5,8 @@ import shared.MeasurePoint;
 import shared.WeatherClient;
 import shared.WeatherServer;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -19,30 +21,37 @@ import java.util.Date;
  * <p>
  * Please change the setting details inside of <FILE></FILE>
  */
-public class Client implements WeatherClient {
-    static String serverAddress = "localhost";
-    static int serverPort = 1234;
-    static boolean updateMe = true;
-    static WeatherData weatherData = new WeatherData();
-    static WeatherConsoleHandler handler;
+public class Client implements WeatherClient, Serializable {
+    private static final long serialVersionUID = 878457870984L;
+    private String serverAddress = "localhost";
+    private int serverPort = 1234;
+    private boolean updateMe = true;
+    private WeatherData weatherData = new WeatherData();
+    private WeatherConsoleHandler handler;
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    public static void main(String[] args) {
+    public void run(String[] args) {
         System.out.println("Client started.");
 
         Registry registry;
         try {
             registry = LocateRegistry.getRegistry(serverAddress, serverPort);
             WeatherServer stub = (WeatherServer) registry.lookup(WeatherServer.class.getName());
+            stub.register(this);
 
-            // stub.register(); ???
             handler = new WeatherConsoleHandler(System.in);
 
             handler.add(event -> {
                 if (event.getMessage().trim().equals("exit")) {
                     System.out.println("Exiting application...");
+                    handler = null;
+                    weatherData = null;
+                    try {
+                        stub.deregister(this);
+                    } catch (RemoteException e) {
+                        System.out.println("error during shutdown of client: " + e.getMessage());
+                    }
                     System.exit(0);
-                    //TODO Shutdownhook for deregistering?
                 } else if (event.getMessage().trim().equals("autoupdate on")) {
                     System.out.println("Autoupdate turned on");
                     updateMe = true;
@@ -77,11 +86,11 @@ public class Client implements WeatherClient {
     public void updateTemperature(MeasurePoint measurePoint) {
         weatherData.modifyMeasurePoint(measurePoint);
         if (updateMe) {
-            handler.printUpdatedWeatherData(measurePoint);
+            handler.printUpdatedWeatherData(this, measurePoint);
         }
     }
 
-    public static WeatherData getWeatherData() {
+    public WeatherData getWeatherData() {
         return weatherData;
     }
 }

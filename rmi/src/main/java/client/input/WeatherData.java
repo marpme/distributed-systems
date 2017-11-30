@@ -2,6 +2,7 @@ package client.input;
 
 import shared.MeasurePoint;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +16,8 @@ import java.util.stream.Collectors;
 /**
  * Weather data storing class
  */
-public class WeatherData {
+public class WeatherData implements Serializable {
+    private static final long serialVersionUID = 1082528412728L;
 
     /**
      * All temperature data

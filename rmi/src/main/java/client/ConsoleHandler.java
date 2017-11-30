@@ -1,6 +1,7 @@
 package client;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,7 +10,8 @@ import java.util.Scanner;
  * Class to register all events on the console
  * and listen for possible inputs
  */
-public class ConsoleHandler {
+public class ConsoleHandler implements Serializable {
+    private static final long serialVersionUID = 46781256467L;
     private List<ConsoleEventListener> listenerList = null;
     private InputStream consoleInput = null;
 
@@ -61,5 +63,9 @@ public class ConsoleHandler {
         for (ConsoleEventListener listener : listenerList) {
             listener.onConsoleEvent(event);
         }
+    }
+
+    public InputStream getConsoleInput() {
+        return consoleInput;
     }
 }

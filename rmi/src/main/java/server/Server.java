@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,7 +23,7 @@ public class Server implements WeatherServer {
     final static int PORT = 1234;
     private static final Logger log = Logger.getLogger(Server.class.getName());
     private static Registry registry;
-    private List<WeatherClient> clients;
+    private List<WeatherClient> clients = new ArrayList<>();
 
     public static void main(String[] args) {
         try {
