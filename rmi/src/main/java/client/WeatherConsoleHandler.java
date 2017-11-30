@@ -3,10 +3,8 @@ package client;
 import shared.MeasurePoint;
 
 import java.io.InputStream;
-import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.DoubleSummaryStatistics;
 import java.util.List;
 
@@ -16,7 +14,7 @@ import java.util.List;
  * inside of the console in form of a simple table.
  */
 public class WeatherConsoleHandler extends ConsoleHandler {
-    private SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+    private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
     /**
      * Constructor for the console input stream

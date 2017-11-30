@@ -4,10 +4,7 @@ import shared.MeasurePoint;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -38,17 +35,31 @@ public class WeatherData implements Serializable {
         this.measurePoints.addAll(measurePoints);
     }
 
+    /**
+     * Modifies a specific measurepoint if present in current data
+     * @param measurePoint the updated measurepoint
+     */
     public void modifyMeasurePoint(MeasurePoint measurePoint) {
         measurePoints.removeIf(point -> point.getTimestamp() == measurePoint.getTimestamp());
         measurePoints.add(measurePoint);
     }
 
+    /**
+     * Returns all measurepoints of a specific day
+     * @param date the day
+     * @return sorted list of measurepoints or null
+     */
     public List<MeasurePoint> getDay(Date date) {
-        return measurePoints.stream().filter(measurePoint -> {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            return sdf.format(measurePoint.getTimestamp()).equals(sdf.format(date));
-        })
-                .collect(Collectors.toList());
+        // gathering results
+        List<MeasurePoint> result = measurePoints.stream().filter(measurePoint -> {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+                    return sdf.format(measurePoint.getTimestamp()).equals(sdf.format(date));
+                }).collect(Collectors.toList());
+        // sorting by time
+        if (result != null) {
+            Collections.sort(result, (o1, o2) -> o1.getTimestamp().compareTo(o2.getTimestamp()));
+        }
+        return result;
     }
 
     public boolean hasDataForDate(Date date) {
