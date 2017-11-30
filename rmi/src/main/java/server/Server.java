@@ -33,7 +33,7 @@ public class Server implements WeatherServer {
             WeatherServer stub = (WeatherServer) UnicastRemoteObject.exportObject(server, PORT);
 
             registry.rebind(WeatherServer.class.getName(), stub);
-            log.info("Startup succedded");
+            log.info("Startup succeeded");
             log.info("RMI bind on port: " + PORT);
         } catch (RemoteException e) {
             log.log(Level.SEVERE, "Startup failed: ", e);
